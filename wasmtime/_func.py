@@ -8,6 +8,8 @@ from typing import Callable, Optional, Generic, TypeVar, List, Union, Tuple, cas
 from ._exportable import AsExtern
 from ._store import Storelike
 
+import time
+from datetime import datetime
 
 T = TypeVar('T')
 FUNCTIONS: "Slab[Tuple]"
@@ -89,6 +91,9 @@ class Func:
         results_ptr = (ffi.wasmtime_val_t * len(result_tys))()
 
         with enter_wasm(store) as trap:
+            ts1 = time.time()
+            dt_obj1 = datetime.fromtimestamp(ts1)
+            print("Time inside Call function : ",dt_obj1)
             error = ffi.wasmtime_func_call(
                 store._context,
                 byref(self._func),
